@@ -7,19 +7,26 @@ import scala.concurrent.{ExecutionContext, Future}
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
+import java.sql.Timestamp
 
 @Singleton
 class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext)
   extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class UserTable(tag: Tag) extends Table[User](tag, "user") {
-    def id = column[Long]("id", O.PrimaryKey)
+    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+
+    def email = column[String]("email")
+
+    def password = column[String]("password")
 
     def name = column[String]("name")
 
-    def age = column[Int]("age")
+    def token = column[String]("token")
 
-    def * = (id, name, age) <> (User.tupled, User.unapply)
+    def expired_at = column[Timestamp]("expired_at")
+
+    def * = (id, email, password, name, token, expired_at) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val users = TableQuery[UserTable]

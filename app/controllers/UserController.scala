@@ -9,10 +9,9 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.http._
 import play.api.libs.json._
-import concurrent.duration._
+import java.sql.Timestamp
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent._
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
@@ -29,8 +28,7 @@ class UserController @Inject()(cc: ControllerComponents, userRepository: UserRep
 
     Form(
       mapping(
-        "name" -> text(maxLength = 10),
-        //"email" -> email,
+        "email" -> email,
         "password" -> text(minLength = 10)
       )(UserRegisterForm.apply)(UserRegisterForm.unapply)
     )
@@ -46,13 +44,7 @@ class UserController @Inject()(cc: ControllerComponents, userRepository: UserRep
     */
   }
 
-  implicit val userWrites = new Writes[User] {
-    def writes(user: User) = Json.obj(
-      "id" -> user.id,
-      "name" -> user.name,
-      "age" -> user.age
-    )
-  }
+  implicit val userWrites = Json.format[User]
 
   def list = Action.async { implicit request =>
     userRepository.list().map(user => Ok(Json.toJson(user)))
