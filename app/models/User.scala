@@ -5,8 +5,7 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.{Locale, TimeZone}
 
-//case class User(id: Long, email: String, password: String, name:String, token: String, expired_at:Timestamp)
-case class User(id: Option[Long], email: String, password: String, name:String)
+case class User(id: Option[Long], email: String, password: String, name:String, token: String, expired_at:Timestamp)
 
 object User{
   implicit object timestampFormat extends Format[Timestamp] {
