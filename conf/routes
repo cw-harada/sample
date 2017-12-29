@@ -3,7 +3,7 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-POST     /user/register                           controllers.UserController.register
+POST /user/register                           controllers.UserController.register
 GET      /                                        controllers.UserController.list
 
 # Map static resources from the /public folder to the /assets URL path

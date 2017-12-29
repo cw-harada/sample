@@ -22,11 +22,14 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
     def name = column[String]("name")
 
+    /*
     def token = column[String]("token")
 
     def expired_at = column[Timestamp]("expired_at")
+    */
 
-    def * = (id, email, password, name, token, expired_at) <> ((User.apply _).tupled, User.unapply)
+    //def * = (id, email, password, name, token, expired_at) <> ((User.apply _).tupled, User.unapply)
+    def * = (id.?, email, password, name) <> ((User.apply _).tupled, User.unapply)
   }
 
   private val users = TableQuery[UserTable]
